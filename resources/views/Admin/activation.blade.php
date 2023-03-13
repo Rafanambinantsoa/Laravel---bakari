@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Table - Brand</title>
-    <link rel="stylesheet" href="{{asset('assets1/bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="{{asset('assets1/fonts/fontawesome-all.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/fonts/fontawesome-all.min.css')}}">
 </head>
 
 <body id="page-top">
@@ -19,8 +19,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="table.html"><i class="fas fa-user"></i><span>Ajout des Maisons</span></a>
-                    <a class="nav-link" href="show_logement"><i class="fas fa-user"></i><span>Mes maisons</span></a></li>
+                    <a class="nav-link " href="add_form"><i class="fas fa-user"></i><span>Ajout des Maisons</span></a>
+                    <a class="nav-link active" href=""><i class="fas fa-user"></i><span>Mes maisons</span></a></li>
                 <li class="nav-item">
                     <a class="nav-link" href="table.html"><i class="fas fa-user-circle"></i><span>Les déclarants</span></a>
                     <a class="nav-link" href="table.html"><i class="fas fa-user-circle"></i><span>Les mises à jour</span></a>
@@ -126,119 +126,64 @@
                 </div>
             </nav>
             <div class="container-fluid">
-                <h3 class="text-dark mb-4">Ajouts d'un Logement </h3>
+                <h3 class="text-dark mb-4">Listes des nouveaux Comptes Inactifs des Agents</h3>
+                @if (session()->has('success'))
+                    <div class="alert alert-success" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        {{ session()->get('success') }}
+                    </div>
+                @endif
                 <div class="card shadow">
                     <div class="card-body">
-                        @if (session()->has('success'))
-                            <div class="alert alert-success" role="alert">
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                {{ session()->get('success') }}
-                            </div>
-                        @endif
-                        <form action="add_form" method="post" enctype="multipart/form-data">
-                            @csrf
-                            @method('post')
-                            <div class="form-group">
-                                <label for="">Nom de la maison</label>
-                                <input type="text" name="nom" class="form-control">
-                                @error('nom')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Lieu où se situe la maison</label>
-                                <input type="text" name="lieu" class="form-control">
-                                @error('lieu')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Prix</label>
-                                <input type="number" name="prix" class="form-control">
-                                @error('prix')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Superficie </label>
-                                <input type="number" name="superficie" class="form-control">
-                                @error('superficie')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Lits</label>
-                                <input type="number" name="lit" class="form-control">
-                                @error('lit')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Douche</label>
-                                <input type="number" name="douche" class="form-control">
-                                @error('douche')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Garages</label>
-                                <input type="text" name="garage" class="form-control">
-                                @error('garage')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Descriptions</label>
-                                <input type="text" name="description" class="form-control">
-                                @error('description')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-
-                            <div class="form-group">
-                                <label for="">Image  1</label>
-                                <input type="file" name="image1" class="form-control">
-                                @error('image1')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="">Image  2</label>
-                                <input type="file" name="image2" class="form-control">
-                                @error('image2')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="">Image  3</label>
-                                <input type="file" name="image3" class="form-control">
-                                @error('image3')
-                                <span class="text-danger" >{{$message}}</span>
-                                @enderror
-                            </div>
-                            <input type="submit" class="btn btn-dark mt-2" value="Enregistrer">
-                        </form>
-
+                        <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                            <table class="table my-0" id="dataTable">
+                                <thead>
+                                <tr>
+                                    <td><strong>Nom de l'agent</strong></td>
+                                    <td><strong>Email</strong></td>
+                                    <td><strong>Description</strong></td>
+                                    <td><strong>Skype</strong></td>
+                                    <td><strong>Mobile</strong></td>
+                                    <td><strong>Status</strong></td>
+                                    <td  class="text-center"><strong>Operations</strong></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($activations as $activation)
+                                        <tr>
+                                            <td>{{$activation->name}}</td>
+                                            <td>{{$activation->email}}</td>
+                                            <td>{{$activation->description}}</td>
+                                            <td>{{$activation->skype}}</td>
+                                            <td>{{$activation->mobile}}</td>
+                                            <td>{{$activation->status}}</td>
+                                            <td>
+                                                <form action="{{route('activation' , $activation->id)}}" method="post">
+                                                    @csrf
+                                                    @method('put')
+                                                    <input type="submit" value="Activer" class="btn btn-warning">
+                                                </form></td>
+                                            </tr>
+                                    @empty
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-center">Pas de Donnée pour le moments</td>
+                                        <td></td>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <footer class="bg-white sticky-footer">
-            <div class="container my-auto">
-                <div class="text-center my-auto copyright"><span>Copyright © Brand 2023</span></div>
-            </div>
-        </footer>
-    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
-</div>
-<script src="{{asset('assets1/bootstrap/js/bootstrap.min.js')}}"></script>
-<script src="{{asset('assets1/js/theme.js')}}"></script>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Brand 2023</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('assets/js/theme.js')}}"></script>
 </body>
-
 </html>

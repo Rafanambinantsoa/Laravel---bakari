@@ -14,11 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('photo',255);
-            $table->string('description',255)->nullable();
+            $table->string('photo',255)->nullable();
             $table->string('description',255)->nullable();
             $table->string('skype',255)->nullable();
             $table->integer('mobile')->nullable();
+            $table->string('status')->nullable();
+            $table->string('role', 10);
         });
     }
 

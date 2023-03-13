@@ -4,20 +4,68 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Log_add;
 use App\Models\Logement;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class LogementController extends Controller
 {
-    public function  index(){
-        return view('accueil');
+    public function  index(Logement $logement , User $user ){
+        $logement = Logement::all();
+        $user = User::all();
+        return view('accueil.accueil2' , [
+            'logements' => $logement,
+            'users' => $user
+        ]);
     }
 
-    public function addForm(){
-        return view('Logement.add_form');
+    public function addForm(User $user){
+        $user = User::all();
+        return view('Logement.add_form' ,[
+            'agent' =>$user
+        ]);
     }
     public function add(Log_add $request ,Logement $logement){
         //dd($request);
-        $logement = Logement::create($request->post());
+        //dd($request->file('image1'));
+
+        //$image1 = $request->file('image1')->getClientOriginalName();
+        //$path1 = $request->file('image1')->storeAs('public/images' , $image1);
+
+
+        $image = $request->file('image1');
+        $imageName1 = time() . '.' . $image->getClientOriginalExtension();
+        $destinationPath1 = public_path('/images');
+        $image->move($destinationPath1, $imageName1);
+
+        $image = $request->file('image2');
+        $imageName2 = time() . '.' . $image->getClientOriginalExtension();
+        $destinationPath2 = public_path('/images');
+        $image->move($destinationPath2, $imageName2);
+
+        $image = $request->file('image3');
+            $imageName3 = time() . '.' . $image->getClientOriginalExtension();
+        $destinationPath3 = public_path('/images');
+        $image->move($destinationPath3, $imageName3);
+
+
+
+        $logement = Logement::create([
+            'nom' => $request->nom,
+            'lieu' => $request->lieu,
+            'prix' => $request->prix,
+            'superficie' => $request->superficie,
+            'lit' => $request->lit,
+            'douche' => $request->douche,
+            'garage' => $request->garage,
+            'description' => $request->description,
+            'image1' => $imageName1,
+            'image2' => $imageName2,
+            'image3' => $imageName3,
+            'path1' => $destinationPath1,
+            'path2' => $destinationPath2,
+            'path3' => $destinationPath3
+
+        ]);
 
         return redirect()->back()->with('success' , 'Maison ajouté');
     }
@@ -59,5 +107,13 @@ class LogementController extends Controller
         $logement->delete();
 
         return redirect()->back()->with('success' , 'Maison retirée');
+    }
+
+    //to show one logement en particulier
+    public  function show_log(Logement $logement){
+        //dd($logement);
+        return view("accueil.maison" , [
+            'logements'=> $logement
+        ]);
     }
 }

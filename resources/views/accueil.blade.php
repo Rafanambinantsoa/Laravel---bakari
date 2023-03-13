@@ -19,7 +19,7 @@
 
 
     <!-- Libraries CSS Files -->
-    <link href=""{{asset('lib/font-awesome/css/font-awesome.min.css')}} rel="stylesheet">
+    <link href="{{asset('lib/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('lib/animate/animate.min.css')}}" rel="stylesheet">
     <link href="{{asset('lib/ionicons/css/ionicons.min.css')}}" rel="stylesheet">
     <link href="{{asset('lib/owlcarousel/assets/owl.carousel.min.css')}}" rel="stylesheet">
@@ -36,7 +36,7 @@
 </head>
 
 <body>
-<!-- Modal -->
+<!-- Modal registration -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -45,17 +45,32 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"> X</button>
             </div>
             <div class="modal-body">
-                <form action="" method="post">
+                <form action="{{route('register')}}" method="post">
+                    @csrf
+                    @method('post')
                     <div class="form-group" >
-                        <input type="text" name="email" class="form-control">
+                        <input type="text" name="name" placeholder="Votre nom" class="form-control">
                     </div>
                     <div class="form-group" >
-                        <input type="password" id="password" name="password" class="form-control">
+                        <input type="text" name="email" placeholder="Votre email" class="form-control">
                     </div>
                     <div class="form-group" >
-                        <input type="password" id="confirm-password" name="confirm-password" class="form-control">
+                        <input type="text" name="mobile" placeholder="Mobile" class="form-control">
+                    </div>
+                    <div class="form-group" >
+                        <input type="text" name="skype" placeholder="skype" class="form-control">
+                    </div>
+                    <div class="form-group" >
+                        <input type="text" name="description" placeholder="description" class="form-control">
+                    </div>
+                    <div class="form-group" >
+                        <input type="password" placeholder="password" id="password" name="password" class="form-control">
+                    </div>
+                    <div class="form-group" >
+                        <input type="password" placeholder="confirm-password" id="confirm-password" class="form-control">
                         <div id="password-error" class="text-danger" style="display: none" >Les mot de passe ne correspondent pas</div>
                     </div>
+
                     <div class="form-group" >
                         <input type="submit" class="btn btn-dark" id="submit-btn" value="Register">
                     </div>
@@ -65,6 +80,35 @@
     </div>
 </div>
 </div>
+
+<!-- Modal login  -->
+<div class="modal fade" id="log" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"> X</button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('login')}}" method="post">
+                    @csrf
+                    @method('post')
+                    <div class="form-group" >
+                        <input type="text" name="email" placeholder="Votre email" class="form-control">
+                    </div>
+                    <div class="form-group" >
+                        <input type="text" name="password" placeholder="Votre mot de passe" class="form-control">
+                    </div>
+                    <div class="form-group" >
+                        <input type="submit" class="btn btn-success" id="submit-btn" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
 <script>
     var passwordInput = document.getElementById('password');
     var confirmPasswordInput = document.getElementById('confirm-password');
@@ -216,9 +260,8 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Registration Agent</a>
-                        <a class="dropdown-item" href="blog-single.html">Blog Single</a>
-                        <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>
-                        <a class="dropdown-item" href="agent-single.html">Agent Single</a>
+                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#log">Se Connecter Agent</a>
+
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="contact.html">Contact</a>
@@ -233,10 +276,12 @@
 </nav>
 <!--/ Nav End /-->
 
-<!--/ Carousel Star /-->
+<!--/ Carousel Star limiteo le boucle ato we 3 fotsiny no afficher eo  /-->
 <div class="intro intro-carousel">
     <div id="carousel" class="owl-carousel owl-theme">
-        <div class="carousel-item-a intro-item bg-image" style="background-image: url(img/slide-1.jpg)">
+        @forelse($logements as $logement)
+
+        <div class="carousel-item-a intro-item bg-image" style="background-image: url('{{asset('/images/'.$logement->image1)}}')">
             <div class="overlay overlay-a"></div>
             <div class="intro-content display-table">
                 <div class="table-cell">
@@ -244,13 +289,13 @@
                         <div class="row">
                             <div class="col-lg-8">
                                 <div class="intro-body">
-                                    <p class="intro-title-top">Doral, Florida
+                                    <p class="intro-title-top">{{$logement->nom}}
                                         <br> 78345</p>
                                     <h1 class="intro-title mb-4">
-                                        <span class="color-b">204 </span> Mount
-                                        <br> Olive Road Two</h1>
+
+                                        <span class="color-b">204 </span>  {{$logement->lieu}}</h1>
                                     <p class="intro-subtitle intro-price">
-                                        <a href="#"><span class="price-a">rent | $ 12.000</span></a>
+                                        <a href="#"><span class="price-a">Prix | $ {{$logement->prix}}</span></a>
                                     </p>
                                 </div>
                             </div>
@@ -259,52 +304,31 @@
                 </div>
             </div>
         </div>
-        <div class="carousel-item-a intro-item bg-image" style="background-image: url(img/slide-2.jpg)">
-            <div class="overlay overlay-a"></div>
-            <div class="intro-content display-table">
-                <div class="table-cell">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="intro-body">
-                                    <p class="intro-title-top">Doral, Florida
-                                        <br> 78345</p>
-                                    <h1 class="intro-title mb-4">
-                                        <span class="color-b">204 </span> Rino
-                                        <br> Venda Road Five</h1>
-                                    <p class="intro-subtitle intro-price">
-                                        <a href="#"><span class="price-a">rent | $ 12.000</span></a>
-                                    </p>
+        @empty
+            <div class="carousel-item-a intro-item bg-image" style="background-image: url(img/slide-2.jpg)">
+                <div class="overlay overlay-a"></div>
+                <div class="intro-content display-table">
+                    <div class="table-cell">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="intro-body">
+                                        <p class="intro-title-top">Doral, Florida
+                                            <br> 78345</p>
+                                        <h1 class="intro-title mb-4">
+                                            <span class="color-b">204 </span> Rino
+                                            <br> Venda Road Five</h1>
+                                        <p class="intro-subtitle intro-price">
+                                            <a href="#"><span class="price-a">rent | $ 12.000</span></a>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="carousel-item-a intro-item bg-image" style="background-image: url(img/slide-3.jpg)">
-            <div class="overlay overlay-a"></div>
-            <div class="intro-content display-table">
-                <div class="table-cell">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="intro-body">
-                                    <p class="intro-title-top">Doral, Florida
-                                        <br> 78345</p>
-                                    <h1 class="intro-title mb-4">
-                                        <span class="color-b">204 </span> Alira
-                                        <br> Roan Road One</h1>
-                                    <p class="intro-subtitle intro-price">
-                                        <a href="#"><span class="price-a">rent | $ 12.000</span></a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @endforelse
     </div>
 </div>
 <!--/ Carousel end /-->
@@ -316,84 +340,33 @@
             <div class="col-md-12">
                 <div class="title-wrap d-flex justify-content-between">
                     <div class="title-box">
-                        <h2 class="title-a">Our Services</h2>
+                        <h2 class="title-a">Nos Services</h2>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-4">
-                <div class="card-box-c foo">
-                    <div class="card-header-c d-flex">
-                        <div class="card-box-ico">
-                            <span class="fa fa-gamepad"></span>
-                        </div>
-                        <div class="card-title-c align-self-center">
-                            <h2 class="title-c">Lifestyle</h2>
-                        </div>
-                    </div>
-                    <div class="card-body-c">
-                        <p class="content-c">
-                            Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Praesent sapien massa,
-                            convallis a pellentesque
-                            nec, egestas non nisi.
-                        </p>
-                    </div>
-                    <div class="card-footer-c">
-                        <a href="#" class="link-c link-icon">Read more
-                            <span class="ion-ios-arrow-forward"></span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-8">
                 <div class="card-box-c foo">
                     <div class="card-header-c d-flex">
                         <div class="card-box-ico">
                             <span class="fa fa-usd"></span>
                         </div>
                         <div class="card-title-c align-self-center">
-                            <h2 class="title-c">Loans</h2>
+                            <h2 class="title-c">Ventes</h2>
                         </div>
                     </div>
                     <div class="card-body-c">
                         <p class="content-c">
-                            Nulla porttitor accumsan tincidunt. Curabitur aliquet quam id dui posuere blandit. Mauris blandit
-                            aliquet elit, eget tincidunt
-                            nibh pulvinar a.
+                            Notre engagement envers la satisfaction du client signifie que nous travaillons dur pour vous aider à trouver le logement parfait pour vous et votre famille.
                         </p>
                     </div>
                     <div class="card-footer-c">
-                        <a href="#" class="link-c link-icon">Read more
-                            <span class="ion-ios-arrow-forward"></span>
-                        </a>
+
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card-box-c foo">
-                    <div class="card-header-c d-flex">
-                        <div class="card-box-ico">
-                            <span class="fa fa-home"></span>
-                        </div>
-                        <div class="card-title-c align-self-center">
-                            <h2 class="title-c">Sell</h2>
-                        </div>
-                    </div>
-                    <div class="card-body-c">
-                        <p class="content-c">
-                            Sed porttitor lectus nibh. Cras ultricies ligula sed magna dictum porta. Praesent sapien massa,
-                            convallis a pellentesque
-                            nec, egestas non nisi.
-                        </p>
-                    </div>
-                    <div class="card-footer-c">
-                        <a href="#" class="link-c link-icon">Read more
-                            <span class="ion-ios-arrow-forward"></span>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <div class="col-md-4"></div>
         </div>
     </div>
 </section>
@@ -406,7 +379,7 @@
             <div class="col-md-12">
                 <div class="title-wrap d-flex justify-content-between">
                     <div class="title-box">
-                        <h2 class="title-a">Latest Properties</h2>
+                        <h2 class="title-a">Notre portefeuille de propriétés immobilières</h2>
                     </div>
                     <div class="title-link">
                         <a href="property-grid.html">All Property
@@ -970,7 +943,8 @@
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <div class="testimonial-img">
-                                <img src="img/testimonial-2.jpg" alt="" class="img-fluid">
+                                lkqsdjsqlmdkj
+                                <img src="{{asset('/images/'.$logement->image1)}}" alt="" class="img-fluid">
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">

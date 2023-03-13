@@ -31,7 +31,10 @@ class Log_add extends FormRequest
             'lit' =>'required',
             'douche' =>'required',
             'garage' =>'required',
-            'description' =>'required'
+            'description' =>'required',
+            'image1' =>'required',
+            'image2' =>'required',
+            'image3' =>'required'
         ];
     }
 }

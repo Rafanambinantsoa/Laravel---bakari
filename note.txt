@@ -1,0 +1,2 @@
+Ajout d'un colonne dans une table deja existant
+php artisan make:migration add_garage_logements --table=logments

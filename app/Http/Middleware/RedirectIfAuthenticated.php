@@ -25,6 +25,9 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
                 return redirect(RouteServiceProvider::HOME);
             }
+            if(!Auth::guard($guard)->check()){
+                return redirect('accueil');
+            }
         }
 
         return $next($request);

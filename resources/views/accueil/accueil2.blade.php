@@ -47,13 +47,13 @@
             <div class="carousel-inner h-100">
                 @forelse($logements as $logement)
 
-                <div class="carousel-item active h-100"><img class="w-100 d-block position-absolute h-100 fit-cover" src="{{asset('/images/'.$logement->image1)}}" alt="Slide Image" style="z-index: -1;">
+                <div class="carousel-item active h-100"><img class="w-100 d-block position-absolute h-100 fit-cover" @isset($logement->image1) src="{{asset('/images/'.$logement->image1)}}" @endisset alt="Slide Image" style="z-index: -1;">
                     <div class="container d-flex flex-column justify-content-center h-100">
                         <div class="row">
                             <div class="col-md-6 col-xl-4 offset-md-2">
                                 <div style="max-width: 350px;">
-                                    <h1 class="text-uppercase fw-bold">{{$logement->nom}}<br>{{$logement->lieu}}</h1>
-                                    <p class="my-3">{{$logement->description}} <br> <strong>$ {{$logement->prix}}</strong> </p><a class="btn btn-primary btn-lg me-2" role="button" href="{{route('show' ,$logement->id)}}">Acheter cette maison</a>
+                                    <h1 class="text-uppercase fw-bold">@isset($logement->nom){{$logement->nom}}@endisset<br>@isset($logement->lieu){{$logement->lieu}}@endisset</h1>
+                                    <p class="my-3">@isset($logement->description){{$logement->description}}@endisset <br> <strong>$ @isset($logement->prix) {{$logement->prix}}@endisset</strong> </p><a class="btn btn-primary btn-lg me-2" role="button" @isset($logement->id) href="{{route('show' ,$logement->id)}}" @endisset>Acheter cette maison</a>
                                 </div>
                             </div>
                         </div>
@@ -73,19 +73,24 @@
     <div class="container">
         <h2 class="mb-5">Nos Agents</h2>
         <div class="row">
-            @forelse($users as $user)
-                <div class="col-lg-4">
-                    <div class="mx-auto testimonial-item mb-5 mb-lg-0"><img class="rounded-circle img-fluid mb-3" src="{{asset('/images/'.$user->photo)}}">
-                        <h5>{{$user->name}}</h5>
-                        <p class="font-weight-light mb-0">"{{$user->description}} "<br>
-                        <strong>Phone :  +261 </strong>{{$user->mobile}} <br>
-                            <strong>Email : </strong>{{$user->email}}
-                        </p>
-                    </div>
-                </div>
-            @empty
-                <p>no user for the moments</p>
-            @endforelse
+            @if(!empty($users))
+                @foreach($users as $user)
+                    @if(!empty($user->nom) || !empty($user->prenom) || !empty($user->email))
+                        <div class="col-lg-4">
+                            <div class="mx-auto testimonial-item mb-5 mb-lg-0"><img class="rounded-circle img-fluid mb-3" src="{{asset('/images/'.$user->photo)}}">
+                                <h5>{{$user->name}}</h5>
+                                <p class="font-weight-light mb-0">"{{$user->description}} "<br>
+                                    <strong>Phone :  +261 </strong>{{$user->mobile}} <br>
+                                    <strong>Email : </strong>{{$user->email}}
+                                </p>
+                            </div>
+                        </div>
+                    @else
+                        Aucun agent pour le moment
+                       @endif
+                @endforeach
+            @endif
+
 
         </div>
     </div>
@@ -138,103 +143,5 @@
         </div>
     </div>
 </footer>
-<!-- Modal registration agent -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agent registration</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{route('register')}}" method="post" enctype="multipart/form-data">
-                    @csrf
-                    @method('post')
-                    <div class="form-group" >
-                        <input type="text" name="name" placeholder="Votre nom" class="form-control">
-                    </div>
-                    <div class="form-group mt-3" >
-                        <input type="text" name="email" placeholder="Votre email" class="form-control">
-                    </div>
-                    <div class="form-group mt-3" >
-                        <input type="text" name="mobile" placeholder="Mobile" class="form-control">
-                    </div>
-                    <div class="form-group mt-3" >
-                        <input type="text" name="skype" placeholder="skype" class="form-control">
-                    </div>
-                    <div class="form-group mt-3" >
-                        <input type="text" name="description" placeholder="description" class="form-control">
-                    </div>
-                    <div class="form-group mt-3" >
-                        <input type="password" placeholder="password" id="password" name="password" class="form-control">
-                    </div>
-                    <div class="form-group mt-3" >
-                        <input type="password" placeholder="confirm-password" id="confirm-password" class="form-control">
-                        <div id="password-error" class="text-danger" style="display: none" >Les mot de passe ne correspondent pas</div>
-                    </div>
-
-                    <div class="form-group mt-3" >
-                        <input type="file" class="form-control" placeholder="Votre photos de profil" name="pdp">
-                        <div id="password-error" class="text-danger" style="display: none" >Les mot de passe ne correspondent pas</div>
-                    </div>
-
-                    <div class="form-group mt-3" >
-                        <input type="submit" class="btn btn-dark" id="submit-btn" value="Register">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-<script>
-    var passwordInput = document.getElementById('password');
-    var confirmPasswordInput = document.getElementById('confirm-password');
-    var passwordError = document.getElementById('password-error');
-    var submitBtn = document.getElementById('submit-btn');
-
-    confirmPasswordInput.addEventListener('keyup', function() {
-        if (passwordInput.value !== confirmPasswordInput.value) {
-            passwordError.style.display = 'block';
-            submitBtn.disabled = true;
-        }
-        else if(confirmPasswordInput.value ==""){
-            passwordError.style.display = 'none';
-        }
-        else {
-            passwordError.style.display = 'none';
-            submitBtn.disabled = false;
-        }
-    });
-
-</script>
-
-<!-- Modal agent connexion -->
-<div class="modal fade" id="agentcon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agent registration</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{route('login')}}" method="post">
-                    @csrf
-                    @method('post')
-                    <div class="form-group mt-3" >
-                        <input type="text" name="email" placeholder="Votre email" class="form-control">
-                    </div>
-                    <div class="form-group mt-3" >
-                        <input type="password" name="password" placeholder="Mot de passe" class="form-control">
-                    </div>
-                    <div class="form-group mt-3" >
-                        <input type="submit" class="btn btn-dark" id="submit-btn" value="Se connecter">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
 @endsection
 </html>

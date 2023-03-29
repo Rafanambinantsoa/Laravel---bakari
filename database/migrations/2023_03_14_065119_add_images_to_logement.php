@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('comptes', function (Blueprint $table) {
-            $table->id();
-            $table->string('nom',255);
-            $table->string('password',255);
-            $table->timestamps();
+        Schema::table('logements', function (Blueprint $table) {
+            $table->string('image1',100 );
+            $table->string('image2',100 );
+            $table->string('image3',100 );
         });
     }
 
@@ -28,6 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comptes');
+        Schema::table('logments', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Table - Brand</title>
-    <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets1/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="{{asset('assets/fonts/fontawesome-all.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets1/fonts/fontawesome-all.min.css')}}">
 </head>
 
 <body id="page-top">
@@ -19,10 +19,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                 <li class="nav-item">
-                    <a class="nav-link " href="add_form"><i class="fas fa-user"></i><span>Ajout des Maisons</span></a>
-                    <a class="nav-link active" href=""><i class="fas fa-user"></i><span>Mes maisons</span></a></li>
+                    <a class="nav-link " href="{{route('add_logement')}}"><i class="fas fa-user"></i><span>Ajout des Maisons</span></a>
+                    <a class="nav-link " href="{{route('show_logement')}}"><i class="fas fa-user"></i><span>Mes maisons</span></a></li>
                 <li class="nav-item">
-                    <a class="nav-link" href="table.html"><i class="fas fa-user-circle"></i><span>Les déclarants</span></a>
+                    <a class="nav-link active" href="activation"><i class="fas fa-user-circle"></i><span>Activation compte</span></a>
                     <a class="nav-link" href="table.html"><i class="fas fa-user-circle"></i><span>Les mises à jour</span></a>
                     <a class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i><span>Profile</span></a></li>
             </ul>
@@ -116,9 +116,9 @@
                         </li>
                         <div class="d-none d-sm-block topbar-divider"></div>
                         <li class="nav-item dropdown no-arrow">
-                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
+                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">@auth {{Auth::user()->name}}  </span><img class="border rounded-circle img-profile" src="{{asset('/images/'.Auth::user()->photo)}}">@endauth</a>
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                    <div class="dropdown-divider"></div><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    <div class="dropdown-divider"></div><a class="dropdown-item" href="{{route('logout')}}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                 </div>
                             </div>
                         </li>
@@ -149,27 +149,25 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($activations as $activation)
-                                        <tr>
-                                            <td>{{$activation->name}}</td>
-                                            <td>{{$activation->email}}</td>
-                                            <td>{{$activation->description}}</td>
-                                            <td>{{$activation->skype}}</td>
-                                            <td>{{$activation->mobile}}</td>
-                                            <td>{{$activation->status}}</td>
-                                            <td>
-                                                <form action="{{route('activation' , $activation->id)}}" method="post">
-                                                    @csrf
-                                                    @method('put')
-                                                    <input type="submit" value="Activer" class="btn btn-warning">
-                                                </form></td>
+                                    @foreach($activations as $activation)
+                                            <tr>
+                                                <td>{{$activation->name}}</td>
+                                                <td>{{$activation->email}}</td>
+                                                <td>{{$activation->description}}</td>
+                                                <td>{{$activation->skype}}</td>
+                                                <td>{{$activation->mobile}}</td>
+                                                <td>{{$activation->status}}</td>
+                                                <td>
+                                                    <form action="{{route('activation' , $activation->id)}}" method="post">
+                                                        @csrf
+                                                        @method('put')
+                                                        <input type="submit" value="Activer" class="btn btn-warning">
+                                                    </form></td>
                                             </tr>
-                                    @empty
-                                        <td></td>
-                                        <td></td>
-                                        <td class="text-center">Pas de Donnée pour le moments</td>
-                                        <td></td>
-                                    @endforelse
+                                            <!-- Mettez ici le code HTML que vous souhaitez afficher si au moins un des attributs n'est pas vide -->
+                                    @endforeach
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -183,7 +181,7 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
-    <script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('assets/js/theme.js')}}"></script>
+    <script src="{{asset('assets1/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('assets1/js/theme.js')}}"></script>
 </body>
 </html>

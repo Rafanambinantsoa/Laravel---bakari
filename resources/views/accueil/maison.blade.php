@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{asset('maison/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
     <link rel="stylesheet" href="{{asset('maison/css/swiper-icons.css')}}">
-    <link rel="stylesheet" href="{{"maison/fonts/font-awesome.min.css"}}">
+    <link rel="stylesheet" href="{{asset("maison/fonts/font-awesome.min.css")}}">
     <link rel="stylesheet" href="{{asset('maison/css/Simple-Slider-swiper-bundle.min.css')}}">
     <link rel="stylesheet" href="{{asset('maison/css/Simple-Slider.css')}}">
 <body>
@@ -34,7 +34,7 @@
                 <h2>Descriptions :&nbsp;</h2>
                 <p class="lead mb-0">{{$logements->description}}</p>
             </div>
-            <div class="col-lg-6 col-xl-4 my-auto order-lg-1 showcase-text" style="margin-bottom: 12px;"><a class="btn btn-info" href="#" style="margin-right: -45px;">Acheter cette maison</a></div>
+            <div class="col-lg-6 col-xl-4 my-auto order-lg-1 showcase-text" style="margin-bottom: 12px;"><a class="btn btn-info" href="{{route('client',$logements->id)}}" style="margin-right: -45px;">Acheter cette maison</a></div>
         </div>
         <div class="row g-0">
             <div class="col-lg-6 my-auto order-lg-1 showcase-text">
@@ -51,10 +51,17 @@
             </div>
         </div>
         <div class="row g-0">
-            <div class="col-lg-6 text-white order-lg-2 showcase-img" style="background-image: url(&quot;assets/img/bg-showcase-3.jpg&quot;);"><span></span></div>
+            <div class="col-lg-6 text-white order-lg-2 showcase-img" style="background-image: url(&quot;{{asset('/images/'.$user->photo)}}&quot;);"><span></span></div>
             <div class="col-lg-6 my-auto order-lg-1 showcase-text">
                 <h2 style="margin-left: -79px;margin-bottom: 156px;padding-top: 0px;margin-top: -242px;">Agent :&nbsp;</h2>
-                <p class="lead mb-0" style="margin-top: -130px;margin-right: -51px;margin-left: -59px;">Listes qlSJQKLsjKLQSJKLQjklQJSKLQKLsjkljqSLJQKLsjklqSJKLJQskljqSLKJKLQJklqJSLsjKLQJSKLQJklqSJKLQJsklJSLKJklsklJSKLQJsklQJSKLQSklqJSKLJKLjskl descriptions agents</p>
+                <p class="lead mb-0" style="margin-top: -130px;margin-right: -51px;margin-left: -59px;">
+                    <strong><u>Nom : </u></strong> {{$user->name}} <br>
+                    <strong><u>Email : </u></strong> {{$user->email}} <br>
+                    <strong><u>Description  : </u></strong> {{$user->description}} <br>
+                    <strong><u>Skype : </u></strong> {{$user->skype}} <br>
+                    <strong><u>Nom : </u></strong>+261 {{$user->mobile}} <br>
+                    <strong><u>Nom : </u></strong> {{$user->name}} <br>
+                </p>
             </div>
         </div>
     </div>
@@ -84,8 +91,5 @@
         </div>
     </div>
 </footer>
-<script src="{{asset('maison/bootstrap/js/bootstrap.min.js')}}"></script>
-<script src="{{asset('maison/js/Simple-Slider-swiper-bundle.min.js')}}"></script>
-<script src="{{asset('maison/js/Simple-Slider.js')}}"></script>
 </body>
 @endsection

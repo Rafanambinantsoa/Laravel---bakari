@@ -20,9 +20,9 @@
                     <a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
                 <li class="nav-item">
                     <a class="nav-link " href="add_form"><i class="fas fa-user"></i><span>Ajout des Maisons</span></a>
-                    <a class="nav-link active" href=""><i class="fas fa-user"></i><span>Mes maisons</span></a></li>
+                    <a class="nav-link active" href="show_logement"><i class="fas fa-user"></i><span>Mes maisons</span></a></li>
                 <li class="nav-item">
-                    <a class="nav-link" href="table.html"><i class="fas fa-user-circle"></i><span>Les déclarants</span></a>
+                    <a class="nav-link" href="{{route('activationForm')}}"><i class="fas fa-user-circle"></i><span>Activation compte</span></a>
                     <a class="nav-link" href="table.html"><i class="fas fa-user-circle"></i><span>Les mises à jour</span></a>
                     <a class="nav-link" href="profile.html"><i class="fas fa-user-circle"></i><span>Profile</span></a></li>
             </ul>
@@ -116,7 +116,7 @@
                         </li>
                         <div class="d-none d-sm-block topbar-divider"></div>
                         <li class="nav-item dropdown no-arrow">
-                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">@auth {{Auth::user()->name}}  @endauth</span><img class="border rounded-circle img-profile" src="assets/img/avatars/avatar1.jpeg"></a>
+                            <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">@auth {{Auth::user()->name}}  </span><img class="border rounded-circle img-profile" src="{{asset('/images/'.Auth::user()->photo)}}">@endauth</a>
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in"><a class="dropdown-item" href="#"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
                                     <div class="dropdown-divider"></div><a class="dropdown-item" href="{{route('logout')}}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                 </div>

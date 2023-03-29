@@ -6,6 +6,7 @@ use App\Http\Requests\Log_add;
 use App\Models\Logement;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class LogementController extends Controller
 {
@@ -63,7 +64,8 @@ class LogementController extends Controller
             'image3' => $imageName3,
             'path1' => $destinationPath1,
             'path2' => $destinationPath2,
-            'path3' => $destinationPath3
+            'path3' => $destinationPath3,
+            'id_agent' => $request->id_agent
 
         ]);
 
@@ -111,9 +113,12 @@ class LogementController extends Controller
 
     //to show one logement en particulier
     public  function show_log(Logement $logement){
-        //dd($logement);
+        $user = User::findOrFail($logement->id_agent);
+
         return view("accueil.maison" , [
-            'logements'=> $logement
+            'logements'=> $logement,
+            'user'=>$user
         ]);
     }
+
 }

@@ -64,6 +64,10 @@ class ClientController extends Controller
         Mail::to($email)->send(new EmailDemo($mailData));
         //ajout du client dans la bd
         $client::create($request->all());
+        //chagement du status de la maison en vendus
+        $mot  = Logement::find($request->id_logement);
+        $mot->status = $request->status_maison;
+        $mot->save();
 
         return response()->json([
             'message' => 'Email has been sent.'

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('logements', function (Blueprint $table) {
             $table->bigInteger('id_agent')->unsigned();
             $table->foreign('id_agent')->references('id')->on('users');
+            $table->string('status',200);
 
         });
     }

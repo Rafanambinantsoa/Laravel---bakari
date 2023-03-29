@@ -11,10 +11,15 @@ use Illuminate\Support\Facades\DB;
 class LogementController extends Controller
 {
     public function  index(Logement $logement , User $user ){
-        $logement = Logement::all();
+        // $logement = Logement::all();
+        //listes des maisons qui sont pas encore vendus
+        $kim = DB::table('logements')
+            ->where('status', '=', 'envente')
+            ->get();
+        // dd($kim);
         $user = User::all();
         return view('accueil.accueil2' , [
-            'logements' => $logement,
+            'logements' => $kim,
             'users' => $user
         ]);
     }
@@ -65,7 +70,8 @@ class LogementController extends Controller
             'path1' => $destinationPath1,
             'path2' => $destinationPath2,
             'path3' => $destinationPath3,
-            'id_agent' => $request->id_agent
+            'id_agent' => $request->id_agent,
+            'status' => 'envente',
 
         ]);
 

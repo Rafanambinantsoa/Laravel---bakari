@@ -11,16 +11,20 @@ use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
-    public function index(Logement $logement , User $user){
-        $logement::all();
-        $user::all();
-        return view('accueil.accueil2' ,
-        [
-            'logements' => $logement,
-            'users' =>$user
+    public function index(Logement $logement, User $user)
+    {
+        $kim = DB::table('logements')
+            ->where('status', '=', 'envente')
+            ->get();
+        // dd($kim);
+        $user = User::all();
+        return view('accueil.accueil2', [
+            'logements' => $kim,
+            'users' => $user
         ]);
     }
-    public function register(Request $request , User $user){
+    public function register(Request $request, User $user)
+    {
         $image = $request->file('pdp');
         $imageName = time() . '.' . $image->getClientOriginalExtension();
         $destinationPath3 = public_path('/images');
@@ -28,7 +32,7 @@ class UsersController extends Controller
 
         $user::create([
             'name' => $request->name,
-            'email' =>$request->email,
+            'email' => $request->email,
             'mobile' => $request->mobile,
             'skype' => $request->skype,
             'description' => $request->description,
@@ -38,34 +42,51 @@ class UsersController extends Controller
             'status' => 'desactiver'
         ]);
         return redirect()->back();
-
     }
-    public function loginhandle(Request $request , User $user){
+    public function loginhandle(Request $request, User $user)
+    {
+
         $credentials = $request->only('email', 'password');
-
         if (Auth::attempt($credentials)) {
-            // L'authentification a réussi
-            return redirect()->intended('/add_form');
+            $user = User::where('email', $credentials['email'])->first();
+            if ($user->status == 'activer') {
+                Auth::login($user);
+                return redirect()->intended('/add_form');
+            } else {
+                Auth::logout();
+                return redirect()->route('login')->with('error', 'Your account is disabled.');
+            }
+        } else {
+            return back()->with('error', 'Invalid email or password.');
         }
+        // $credentials = $request->only('email', 'password');
 
-        // L'authentification a échoué
-        return back()->withErrors([
-            'email' => 'Les informations d\'identification ne correspondent pas à nos enregistrements.',
-        ]);
+
+        // if (Auth::attempt($credentials)) {
+        //     // L'authentification a réussi
+        //     return redirect()->intended('/add_form');
+        // }
+
+        // // L'authentification a échoué
+        // return back()->withErrors([
+        //     'email' => 'Les informations d\'identification ne correspondent pas à nos enregistrements.',
+        // ]);
     }
 
-    public function activationForm(User $user){
+    public function activationForm(User $user)
+    {
         $kim = DB::table('users')
             ->where('status', '=', 'desactiver')
             ->get();
 
         //dd($kim);
-        return view('Admin.activation',[
+        return view('Admin.activation', [
             'activations' => $kim
         ]);
     }
 
-    public function  activation(User $user){
+    public function  activation(User $user)
+    {
         $user->status = 'activer';
         $user->save();
 

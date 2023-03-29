@@ -9,7 +9,7 @@ class Logement extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nom','lieu','prix','superficie' , 'lit' ,'douche','description','garage' ,'image1','image2', 'image3' , 'path1','path2' , 'path3' ,'id_agent'] ;
+    protected $fillable = ['nom','lieu','prix','superficie' , 'lit' ,'douche','description','garage' ,'image1','image2', 'image3' , 'path1','path2' , 'path3' ,'id_agent' ,'status'] ;
 
     public function user(){
         return $this->belongsTo(User::class);

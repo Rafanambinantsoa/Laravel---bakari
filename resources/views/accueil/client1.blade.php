@@ -82,6 +82,7 @@
                 </div>
                 {{-- Recuperation de l'id de l'agent --}}
                 <input type="hidden" name="id_logement" value="{{$id_logement}}">
+                <input type="hidden" name="status_maison" value="vendus">
                 <input type="submit" class="btn btn-success" value=" Payer maintenant">
                 </form>
                 <div class="mt-4 mb-4 d-flex justify-content-between">

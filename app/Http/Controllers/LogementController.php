@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class LogementController extends Controller
 {
-    public function  index(Logement $logement , User $user ){
+    public function  index(Logement $logement, User $user)
+    {
         // $logement = Logement::all();
         //listes des maisons qui sont pas encore vendus
         $kim = DB::table('logements')
@@ -18,19 +19,21 @@ class LogementController extends Controller
             ->get();
         // dd($kim);
         $user = User::all();
-        return view('accueil.accueil2' , [
+        return view('accueil.accueil2', [
             'logements' => $kim,
             'users' => $user
         ]);
     }
 
-    public function addForm(User $user){
+    public function addForm(User $user)
+    {
         $user = User::all();
-        return view('Logement.add_form' ,[
-            'agent' =>$user
+        return view('Logement.add_form', [
+            'agent' => $user
         ]);
     }
-    public function add(Log_add $request ,Logement $logement){
+    public function add(Log_add $request, Logement $logement)
+    {
         //dd($request);
         //dd($request->file('image1'));
 
@@ -49,7 +52,7 @@ class LogementController extends Controller
         $image->move($destinationPath2, $imageName2);
 
         $image = $request->file('image3');
-            $imageName3 = time() . '.' . $image->getClientOriginalExtension();
+        $imageName3 = time() . '.' . $image->getClientOriginalExtension();
         $destinationPath3 = public_path('/images');
         $image->move($destinationPath3, $imageName3);
 
@@ -75,27 +78,30 @@ class LogementController extends Controller
 
         ]);
 
-        return redirect()->back()->with('success' , 'Maison ajouté');
+        return redirect()->back()->with('success', 'Maison ajouté');
     }
 
-    public function show(Logement $logement){
+    public function show(Logement $logement)
+    {
         $logement = Logement::all();
         //dd($logement);
 
-        return view('Logement.show' , [
+        return view('Logement.show', [
             'logement' => $logement
         ]);
     }
     //formulaire modal
-    public function editForm(Logement $logement){
+    public function editForm(Logement $logement)
+    {
         //dd($logement);
-        return view('Logement.show' ,[
+        return view('Logement.show', [
             'log_bd' => $logement,
-            'status' =>'ok'
+            'status' => 'ok'
         ]);
     }
 
-    public  function edit(Logement $logement , Request $request){
+    public  function edit(Logement $logement, Request $request)
+    {
         //dd($request);
         $logement->nom = $request->nom;
         $logement->lieu = $request->lieu;
@@ -108,23 +114,88 @@ class LogementController extends Controller
 
         $logement->save();
 
-        return redirect('show_logement')->with('success' , 'maison à jour');
+        return redirect('show_logement')->with('success', 'maison à jour');
     }
 
-    public function delete(Logement $logement){
+    public function delete(Logement $logement)
+    {
         $logement->delete();
 
-        return redirect()->back()->with('success' , 'Maison retirée');
+        return redirect()->back()->with('success', 'Maison retirée');
     }
 
     //to show one logement en particulier
-    public  function show_log(Logement $logement){
+    public  function show_log(Logement $logement)
+    {
         $user = User::findOrFail($logement->id_agent);
 
-        return view("accueil.maison" , [
-            'logements'=> $logement,
-            'user'=>$user
+        return view("accueil.maison", [
+            'logements' => $logement,
+            'user' => $user
         ]);
     }
 
+    //Affichage des maisons vendus
+    public function vendus(Logement $logement)
+    {
+        $agent = DB::table('logements')
+            ->where('status', '=', 'vendus')
+            ->get();
+
+        // dd($agent);
+        return view('Logement.maison_vendus', [
+            'logements' => $agent
+        ]);
+    }
+
+    //affichage de tous les agents active
+    public function agent()
+    {
+        $agent = DB::table('users')
+            ->where('role', '=', 'agent')
+            ->where('status', '=', 'activer')
+            ->get();
+        // dd($agent);
+
+        return view('Logement.maison_vendus_agent', [
+            'agents' => $agent
+        ]);
+    }
+    //pour afficher l'information concerant l'agent en modal
+    public function show_agent($id)
+    {
+        //affichage de tous les agents 
+        $agent = DB::table('users')
+            ->where('role', '=', 'agent')
+            ->where('status', '=', 'activer')
+            ->get();
+        // echo $id
+        $info = User::find($id);
+        // dd($agent);
+
+        //nombre de maison vendus par agent 
+        $resultats = DB::table('logements')
+            ->where('id_agent', '=', $id)
+            ->where('status', '=', 'vendus')
+            ->get();
+
+        // dd($resultats);
+        $vendus = $resultats->count();
+        // dd($vendus);
+        //nombre de maison vendus par agent 
+        $vente = DB::table('logements')
+            ->where('id_agent', '=', $id)
+            ->where('status', '=', 'envente')
+            ->get();
+
+        $envente = $vente->count();
+
+        return view('Logement.maison_vendus_agent', [
+            'agents' => $agent,
+            'info' => $info,
+            'status' => 'tsukasa',
+            'vendus' => $vendus,
+            'envente' => $envente
+        ]);
+    }
 }

@@ -32,6 +32,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/edit/{logement}', [\App\Http\Controllers\LogementController::class, 'editForm'])->name('editForm');
     Route::put('/edit/{logement}', [\App\Http\Controllers\LogementController::class, 'edit'])->name('edit');
     Route::delete('/delete/{logement}', [\App\Http\Controllers\LogementController::class, 'delete'])->name('delete');
+    Route::get('/vendus', [\App\Http\Controllers\LogementController::class, 'vendus'])->name('vendus');
+    Route::get('/agent', [\App\Http\Controllers\LogementController::class, 'agent'])->name('agent');
+    Route::get('/agent/{id}', [\App\Http\Controllers\LogementController::class, 'show_agent'])->name('show_agent');
 
 });
 

@@ -1,2 +1,26 @@
 Ajout d'un colonne dans une table deja existant
 php artisan make:migration add_garage_logements --table=logments
+
+
+
+Le erreur "Attempt to read property "nom" on int"  , le methode nakanao anle donne donne zay  first
+  $agent = DB::table('logements')
+            ->where('status' ,'=','vendus')
+            ->first();
+
+        // dd($agent);
+        return view('Logement.maison_vendus',[
+            'logements' => $agent
+        ]);
+
+
+On peut pas parcourir par une boucle parce que first retourne just 1 donne , donc au lieu de first on utilise get (qui fetch tous les donnee)
+
+  $agent = DB::table('logements')
+            ->where('status' ,'=','vendus')
+            ->first();
+
+        // dd($agent);
+        return view('Logement.maison_vendus',[
+            'logements' => $agent
+        ]);

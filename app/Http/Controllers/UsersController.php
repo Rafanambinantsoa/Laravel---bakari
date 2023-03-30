@@ -80,7 +80,7 @@ class UsersController extends Controller
             ->get();
 
         //dd($kim);
-        return view('Admin.activation', [
+        return view('Logement.activation', [
             'activations' => $kim
         ]);
     }
@@ -103,4 +103,5 @@ class UsersController extends Controller
 
         return redirect('accueil');
     }
+
 }

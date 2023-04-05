@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Twilio\Rest\Client;
+
 
 class UsersController extends Controller
 {
@@ -17,7 +19,11 @@ class UsersController extends Controller
             ->where('status', '=', 'envente')
             ->get();
         // dd($kim);
-        $user = User::all();
+        // $user = User::all();
+        $user = DB::table('users')
+            ->where('status', '=', 'activer')
+            ->where('role', '=', 'agent')
+            ->get();
         return view('accueil.accueil2', [
             'logements' => $kim,
             'users' => $user
@@ -41,6 +47,23 @@ class UsersController extends Controller
             'role' => 'agent',
             'status' => 'desactiver'
         ]);
+        $body = "Bonjour Admin Karim , un certain agent  ".$request->name."  vient de s'inscrire sur le site , veuillez vérifier ses infos et l'activer";
+        //envoie de message à l'admin qu'un agent s'est inscrit et qu'on besoin de l'activer 
+        $sid    = getenv("TWILIO_SID");
+        $token  = getenv("TWILIO_TOKEN");
+        $kim  = getenv("TWILIO_FROM");
+        $twilio = new Client($sid, $token);
+
+        $message = $twilio->messages
+            ->create(
+                "+261344145855", // to 
+                array(
+                    "body" => $body,
+                    "from" => $kim
+                )
+            );
+        //fin evoie messages
+
         return redirect()->back();
     }
     public function loginhandle(Request $request, User $user)
@@ -103,5 +126,4 @@ class UsersController extends Controller
 
         return redirect('accueil');
     }
-
 }

@@ -7,7 +7,9 @@
     <title>Table - Brand</title>
     <link rel="stylesheet" href="{{asset('assets1/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i&amp;display=swap">
-    <link rel="stylesheet" href="{{asset('assets1/fonts/fontawesome-all.min.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('assets1/fonts/fontawesome-all.min.css')}}"> --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -17,14 +19,34 @@
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    @if (Auth::user()->role == "admin")
+                    <a class="nav-link" href="{{route('DashAdmin')}}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    @endif
+                    @if (Auth::user()->role == "agent")
+                    <a class="nav-link" href="{{route('DashAgent', Auth::user()->id)}}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    @endif
                 <li class="nav-item">
+                    @if (Auth::user()->role == "agent")
                     <a class="nav-link " href="{{route('add_logement')}}"><i class="fas fa-user"></i><span>Ajout des Maisons</span></a>
-                    <a class="nav-link " href="{{route('show_logement')}}"><i class="fas fa-user"></i><span>Mes maisons</span></a></li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{route('activationForm')}}"><i class="fas fa-user-circle"></i><span>Activation compte</span></a>
-                    <a class="nav-link" href="{{route('vendus')}}"><i class="fas fa-user-circle"></i><span>Mes maisons vendus</span></a>
-                    <a class="nav-link" href="{{route('agent')}}"><i class="fas fa-user-circle"></i><span>Profils des Agents</span></a></li>
+                    <a class="nav-link " href="{{route('show_logement', Auth::user()->id)}}"><i class="fas fa-user"></i><span>Mes maisons</span></a></li>
+                    @endif
+                    <li class="nav-item">
+                        @if (Auth::user()->role == "admin")
+                        <a class="nav-link" href="{{route('activationForm')}}"><i class="fas fa-user-circle"></i><span>Activation compte</span></a>
+                        <a class="nav-link" href="{{route('agent')}}"><i class="fas fa-user-circle"></i><span>Profils des Agents</span></a></li>
+                        @endif
+                    <li class="nav-item">
+                        @if (Auth::user()->role == "admin")
+                        <a class="nav-link " href="{{route('vendus')}}"><i class="fas fa-user"></i><span>Mes maisons vendus</span></a>
+                        @endif
+                        @if (Auth::user()->role == "agent")
+                        <a class="nav-link " href="{{route('agentMaisonVendus', Auth::user()->id)}}"><i class="fas fa-user"></i><span>Mes maisons vendus (Agents)</span></a>
+                        @endif
+                        @if (Auth::user()->role == "admin")
+                        <a class="nav-link " href="{{route('AdminMaisonVendus')}}"><i class="fas fa-user"></i><span>Les maisons en Vente</span></a>
+                        @endif
+
+                    </li>
             </ul>
             <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
         </div>
@@ -49,7 +71,7 @@
             @yield("body-container")
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
-                    <div class="text-center my-auto copyright"><span>Copyright © Brand 2023</span></div>
+                    <div class="text-center my-auto copyright"><span>Copyright © Tsukasa 2023</span></div>
                 </div>
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - Brand</title>
+    <title>Kim - logement</title>
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic&amp;display=swap">
     <link rel="stylesheet" href="{{asset('assets/fonts/font-awesome.min.css')}}">
@@ -16,6 +16,7 @@
 <body>
 <nav class="navbar navbar-light navbar-expand bg-light navigation-clean">
     <div class="container">
+        <img src="{{ asset('/img/vonage-spinner.877683e4.gif') }}" height="40px" >
         <a class="navbar-brand fs-4 fw-bold" href="#" style="margin-right: 497px;">kim logement</a>
         <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"></button>
         <div class="collapse navbar-collapse" id="navcol-1">

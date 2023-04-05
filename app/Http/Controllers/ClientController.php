@@ -6,7 +6,6 @@ use App\Http\Requests\Client_val;
 use App\Http\Requests\Client_val_1;
 use App\Mail\DemoMail;
 use App\Mail\EmailDemo;
-use App\Models\Client;
 use App\Models\Clients;
 use App\Models\Logement;
 use Illuminate\Http\Request;
@@ -15,6 +14,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\Response;
+use Twilio\Rest\Client;
+
+
 
 class ClientController extends Controller
 {
@@ -68,6 +70,30 @@ class ClientController extends Controller
         $mot  = Logement::find($request->id_logement);
         $mot->status = $request->status_maison;
         $mot->save();
+
+        //envoie d'un notification à l'admin qu'une maison a été vendus
+        $body = "         Bonjour Admin Karim,
+        Nous avons le plaisir de vous informer qu'un agent a vendu une maison.
+        Voici les informations de l'agent :
+          + Nom :".$agent->name."
+          + Numéro de téléphone :".$agent->mobile."         
+          + Adresse e-mail :".$agent->email."
+        Les détails de la vente sont les suivants :
+         -Adresse de la propriété vendue : ".$logement->lieu."
+         -Prix de vente : ". $logement->prix."$";
+        $sid    = getenv("TWILIO_SID"); 
+        $token  =getenv("TWILIO_TOKEN"); 
+        $kim  =getenv("TWILIO_FROM"); 
+        $twilio = new Client($sid, $token); 
+         
+        $message = $twilio->messages 
+                          ->create("+261344145855", // to 
+                                   array(        
+                                       "body" => $body ,
+                                        "from" => $kim
+                                   ) 
+                          ); 
+        //fin notification
 
         return response()->json([
             'message' => 'Email has been sent.'

@@ -18,7 +18,12 @@ class LogementController extends Controller
             ->where('status', '=', 'envente')
             ->get();
         // dd($kim);
-        $user = User::all();
+        // $user = User::all();
+        //Listes des agents accepter
+        $user = DB::table('users')
+            ->where('status', '=', 'activer')
+            ->where('role', '=', 'agent')
+            ->get();
         return view('accueil.accueil2', [
             'logements' => $kim,
             'users' => $user
@@ -40,19 +45,22 @@ class LogementController extends Controller
         //$image1 = $request->file('image1')->getClientOriginalName();
         //$path1 = $request->file('image1')->storeAs('public/images' , $image1);
 
-
+        //generer 5 lettre aléatoires
+        $random1= substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 5);
         $image = $request->file('image1');
-        $imageName1 = time() . '.' . $image->getClientOriginalExtension();
+        $imageName1 = $random1 . '.' . $image->getClientOriginalExtension();
         $destinationPath1 = public_path('/images');
         $image->move($destinationPath1, $imageName1);
 
+        $random2= substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 5);
         $image = $request->file('image2');
-        $imageName2 = time() . '.' . $image->getClientOriginalExtension();
+        $imageName2 = $random2. '.' . $image->getClientOriginalExtension();
         $destinationPath2 = public_path('/images');
         $image->move($destinationPath2, $imageName2);
 
+        $random3= substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 5);
         $image = $request->file('image3');
-        $imageName3 = time() . '.' . $image->getClientOriginalExtension();
+        $imageName3 = $random3. '.' . $image->getClientOriginalExtension();
         $destinationPath3 = public_path('/images');
         $image->move($destinationPath3, $imageName3);
 
@@ -81,13 +89,18 @@ class LogementController extends Controller
         return redirect()->back()->with('success', 'Maison ajouté');
     }
 
-    public function show(Logement $logement)
+    public function show(Logement $logement, $id)
     {
-        $logement = Logement::all();
-        //dd($logement);
+        // dd($id);
+        // $logement = Logement::all();
+        //Listes des logements qui appartien àl'agent connecter
+        $kim = DB::table('logements')
+            ->where('id_agent', '=', $id)
+            ->get();
+        // dd($kim);
 
         return view('Logement.show', [
-            'logement' => $logement
+            'logement' => $kim
         ]);
     }
     //formulaire modal
@@ -198,4 +211,91 @@ class LogementController extends Controller
             'envente' => $envente
         ]);
     }
+    //Dashboard de l'agent 
+    public function DashAgent($id){
+        //nombre de maison en vente et vendus
+        $maison = DB::table('logements')
+            ->where('id_agent', '=', $id)
+            ->get();
+        //nombre de maison en vente
+        $vente = DB::table('logements')
+            ->where('id_agent', '=', $id)
+            ->where('status', '=', 'envente')
+            ->get();
+        //nombre de maison vendus
+        $vendus = DB::table('logements')
+            ->where('id_agent', '=', $id)
+            ->where('status', '=', 'vendus')
+            ->get();
+        // dd($vendus);
+
+        return view('Logement.DashboardAgent',[
+            'maisons' => $maison->count(),
+            'ventes' => $vente->count(),
+            'vendus' => $vendus->count()
+        ]);
+    }
+
+    //affichage de tous les agents vendus pour chaque agents
+    public function agentMaisonVendus($id){
+        $vente = DB::table('logements')
+            ->where('id_agent', '=', $id)
+            ->where('status', '=', 'vendus')
+            ->get();
+        
+        // dd($vente);
+        return view('Logement.vendus_par agent',[
+            'logements' => $vente
+        ]);
+
+    }
+
+    //Affihcage de tous les maisons en vente (Admin)
+    public function AdminMaisonVendus(){
+        $vente = DB::table('logements')
+            ->where('status', '=', 'envente')
+            ->get();
+        
+        // dd($vente);
+        return view('Logement.enventeAgent',[
+            'logements' => $vente
+        ]);
+    }
+    //Affichage de Dashboard Admin
+    public function DashAdmin(Logement $logement){
+        //Nombre de maisons total
+        $total = $logement::all();
+
+        //Nombres des maisons en vente
+        $vente = DB::table('logements')
+            ->where('status', '=', 'envente')
+            ->get();
+
+        //Nombre des maisons vendus
+        $vendus = DB::table('logements')
+            ->where('status', '=', 'vendus')
+            ->get();
+        
+        //Nombre des agents active
+        $active = DB::table('users')
+            ->where('status', '=', 'activer')
+            ->get();
+
+        //Nombre des demande en cours
+        $inactive = DB::table('users')
+            ->where('status', '=', 'desactiver')
+            ->get();
+
+        //test
+        // dd($inactive);
+
+        return view('Logement.DashboardAdmin',[
+            'total' => $total->count(),
+            'vente' => $vente->count(),
+            'vendus' => $vendus->count(),
+            'active' => $active->count(),
+            'inactive' => $inactive->count(),
+        ]);
+    }
+
 }

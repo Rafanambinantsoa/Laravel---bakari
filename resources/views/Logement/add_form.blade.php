@@ -17,7 +17,7 @@
                 @method('post')
                 <div class="form-group">
                     <label for="">Nom de la maison</label>
-                    <input type="text" name="nom" class="form-control">
+                    <input type="text" name="nom" class="form-control" value="{{old('nom')}}">
                     @error('nom')
                     <span class="text-danger" >{{$message}}</span>
                     @enderror
@@ -25,7 +25,7 @@
 
                 <div class="form-group">
                     <label for="">Lieu où se situe la maison</label>
-                    <input type="text" name="lieu" class="form-control">
+                    <input type="text" name="lieu" class="form-control" value="{{old('lieu')}}">
                     @error('lieu')
                     <span class="text-danger" >{{$message}}</span>
                     @enderror
@@ -33,7 +33,7 @@
 
                 <div class="form-group">
                     <label for="">Prix</label>
-                    <input type="number" name="prix" class="form-control">
+                    <input type="number" name="prix" class="form-control" value="{{old('prix')}}">
                     @error('prix')
                     <span class="text-danger" >{{$message}}</span>
                     @enderror
@@ -41,7 +41,7 @@
 
                 <div class="form-group">
                     <label for="">Superficie </label>
-                    <input type="number" name="superficie" class="form-control">
+                    <input type="number" name="superficie" class="form-control" value="{{old('superficie')}}">
                     @error('superficie')
                     <span class="text-danger" >{{$message}}</span>
                     @enderror
@@ -49,7 +49,7 @@
 
                 <div class="form-group">
                     <label for="">Lits</label>
-                    <input type="number" name="lit" class="form-control">
+                    <input type="number" name="lit" class="form-control" value="{{old('lit')}}">
                     @error('lit')
                     <span class="text-danger" >{{$message}}</span>
                     @enderror
@@ -57,7 +57,7 @@
 
                 <div class="form-group">
                     <label for="">Douche</label>
-                    <input type="number" name="douche" class="form-control">
+                    <input type="number" name="douche" class="form-control" value="{{old('douche')}}">
                     @error('douche')
                     <span class="text-danger" >{{$message}}</span>
                     @enderror
@@ -65,7 +65,7 @@
 
                 <div class="form-group">
                     <label for="">Garages</label>
-                    <input type="number" name="garage" class="form-control">
+                    <input type="number" name="garage" class="form-control" value="{{old('garage')}}">
                     @error('garage')
                     <span class="text-danger" >{{$message}}</span>
                     @enderror
@@ -73,7 +73,7 @@
 
                 <div class="form-group">
                     <label for="">Descriptions</label>
-                    <input type="text" name="description" class="form-control">
+                    <input type="text" name="description" class="form-control" value="{{old('description')}}">
                     @error('description')
                     <span class="text-danger" >{{$message}}</span>
                     @enderror

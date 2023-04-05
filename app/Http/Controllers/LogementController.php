@@ -14,8 +14,16 @@ class LogementController extends Controller
     {
         // $logement = Logement::all();
         //listes des maisons qui sont pas encore vendus
+        // $kim = DB::table('logements')
+        //     ->where('status', '=', 'envente')
+        //     ->get();
+        // dd($kim);
+
+        //listes des maisons avec tous les infos de chaque agent responsable d'un maison , GG mec Fita
         $kim = DB::table('logements')
-            ->where('status', '=', 'envente')
+            ->join('users', 'logements.id_agent', '=', 'users.id')
+            ->select('logements.*', 'users.*')
+            ->where('logements.status', '=', 'envente')
             ->get();
         // dd($kim);
         // $user = User::all();

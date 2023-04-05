@@ -50,7 +50,7 @@
     </section>
     <section class="showcase">
         <div class="container-fluid p-0">
-            <div class="carousel slide carousel-dark carousel-fade" data-bs-ride="carousel" data-bs-interval="3000"
+            <div class="carousel slide carousel-dark carousel-fade" data-bs-ride="carousel" data-bs-interval="15000"
                 data-bs-pause="false" id="carousel-1" style="height: 600px;">
                 <div class="carousel-inner h-100">
                     @forelse($logements as $logement)
@@ -84,8 +84,24 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-xl-4 offset-md-2">
-                                        
-                                            <img src="{{ asset('/img/agent-7.jpg')}}" class="img-fluid" alt="image desc">
+                                        <p>
+                                            {{-- bon voilà le qr code pour chaque maison --}}
+                                            {!! QrCode::size(250)->generate("Infos pour la maison  
+                                            \n Nom : \n ".$logement->nom." 
+                                            \n Lieu : ".$logement->lieu."
+                                            \n Superficie :  ".$logement->superficie."  m² 
+                                            \n Nombre de lits :  ".$logement->lit."
+                                            \n Douche :".$logement->douche."
+                                            \n Garage  : ".$logement->garage."
+                                            \n Prix : ".$logement->prix." $ 
+                                            \n  Infon de l'agent responsable    
+                                            \n Agent : \n ".$logement->name." 
+                                            \n Email : ".$logement->email." 
+                                            \n Mobile : ".$logement->mobile."  
+                                            \n  Merci pour votre visite , by Kim logements"  
+                                            )!!}
+
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -95,10 +111,16 @@
                         <p>vide</p>
                     @endforelse
                 </div>
-                <div><a class="carousel-control-prev" href="#carousel-1" role="button" data-bs-slide="prev"><span
-                            class="carousel-control-prev-icon"></span><span class="visually-hidden">Previous</span></a><a
-                        class="carousel-control-next" href="#carousel-1" role="button" data-bs-slide="next"><span
-                            class="carousel-control-next-icon"></span><span class="visually-hidden">Next</span></a></div>
+                <div>
+                    <a class="carousel-control-prev" href="#carousel-1" role="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carousel-1" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                        <span class="visually-hidden">Next</span>
+                    </a>
+                </div>
 
             </div>
         </div>

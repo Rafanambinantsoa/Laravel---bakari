@@ -80,7 +80,7 @@ class ClientController extends Controller
           + Adresse e-mail :".$agent->email."
         Les détails de la vente sont les suivants :
          -Adresse de la propriété vendue : ".$logement->lieu."
-         -Prix de vente : ". $logement->prix."$";
+         -Prix de vente : ". $logement->prix." $";
         $sid    = getenv("TWILIO_SID"); 
         $token  =getenv("TWILIO_TOKEN"); 
         $kim  =getenv("TWILIO_FROM"); 
@@ -94,10 +94,10 @@ class ClientController extends Controller
                                    ) 
                           ); 
         //fin notification
-
-        return response()->json([
-            'message' => 'Email has been sent.'
-        ], Response::HTTP_OK);
+        return redirect('accueil');
+        // return response()->json([
+        //     'message' => 'Email has been sent.'
+        // ], Response::HTTP_OK);
 
     }
 

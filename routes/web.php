@@ -47,9 +47,9 @@ Route::get('/accueil', [\App\Http\Controllers\LogementController::class, 'index'
 
 //test
 // Route::get('/test', [test::class, 'index']);
-Route::get('/test', [test::class, 'index'])->name('test');
+Route::get('/test', [test::class, 'ko'])->name('test');
 
-Route::get('/show/{logement}', [\App\Http\Controllers\LogementController::class, 'show_log'])->name('show');
+Route::get('/show/{id}', [\App\Http\Controllers\LogementController::class, 'show_log'])->name('show');
 
 
 //route pour la registration ,login d'un agent et l'activation de son compte par un admin

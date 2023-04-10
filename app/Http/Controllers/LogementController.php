@@ -22,7 +22,22 @@ class LogementController extends Controller
         //listes des maisons avec tous les infos de chaque agent responsable d'un maison , GG mec Fita
         $kim = DB::table('logements')
             ->join('users', 'logements.id_agent', '=', 'users.id')
-            ->select('logements.*', 'users.*')
+            ->select(
+                'logements.id',
+                'logements.nom',
+                'logements.lieu',
+                'logements.prix',
+                'logements.superficie',
+                'logements.lit',
+                'logements.douche',
+                'logements.description',
+                'logements.garage',
+                'logements.image1',
+                'users.name',
+                'users.email',
+                'users.skype',
+                'users.mobile',
+                )
             ->where('logements.status', '=', 'envente')
             ->get();
         // dd($kim);
@@ -146,8 +161,10 @@ class LogementController extends Controller
     }
 
     //to show one logement en particulier
-    public  function show_log(Logement $logement)
+    public  function show_log($id)
     {
+        $logement = Logement::find($id);
+        // dd($logement);
         $user = User::findOrFail($logement->id_agent);
 
         return view("accueil.maison", [

@@ -16,11 +16,26 @@ class UsersController extends Controller
     public function index(Logement $logement, User $user)
     {
          //listes des maisons avec tous les infos de chaque agent responsable d'un maison , GG mec Fita
-         $kim = DB::table('logements')
-         ->join('users', 'logements.id_agent', '=', 'users.id')
-         ->select('logements.*', 'users.*')
-         ->where('logements.status', '=', 'envente')
-         ->get();
+        $kim = DB::table('logements')
+        ->join('users', 'logements.id_agent', '=', 'users.id')
+        ->select(
+            'logements.id',
+            'logements.nom',
+            'logements.lieu',
+            'logements.prix',
+            'logements.superficie',
+            'logements.lit',
+            'logements.douche',
+            'logements.description',
+            'logements.garage',
+            'logements.image1',
+            'users.name',
+            'users.email',
+            'users.skype',
+            'users.mobile',
+            )
+        ->where('logements.status', '=', 'envente')
+        ->get();
         // $kim = DB::table('logements')
         //     ->where('status', '=', 'envente')
         //     ->get();
